@@ -19,6 +19,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        $this->ensureTeacher();
+
         return view('auth.register');
     }
 
@@ -27,6 +29,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $this->ensureTeacher();
+
         $validated = $request->validate([
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -49,13 +53,22 @@ class RegisteredUserController extends Controller
             'school_name' => $validated['school_name'] ?? null,
             'guardian_name' => $validated['guardian_name'] ?? null,
             'guardian_phone' => $validated['guardian_phone'] ?? null,
+            'is_teacher' => false,
             'password' => Hash::make($validated['password']),
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        return redirect()
+            ->route('register')
+            ->with('status', 'Student account created. They can now log in.');
+    }
 
-        return redirect()->route('student.dashboard');
+    /**
+     * Limit registration to teacher/admin accounts.
+     */
+    private function ensureTeacher(): void
+    {
+        abort_unless(Auth::user()?->is_teacher, 403, 'Only teachers can register student accounts.');
     }
 }

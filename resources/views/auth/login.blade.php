@@ -28,12 +28,13 @@
                 </div>
                 <p class="text-emerald-800 font-medium mb-0">Unified dashboard with assignments, announcements, and more.</p>
             </div>
-            <a href="{{ route('register') }}" class="text-emerald-600 hover:text-emerald-800 font-semibold">Need an account? Register</a>
+            <p class="text-emerald-700 font-semibold">Accounts are created by teachers. Ask your teacher to add you.</p>
         </div>
 
         <form method="POST" action="{{ route('login') }}" class="bg-[#f6fff6] rounded-2xl p-6 shadow-inner space-y-4">
             @csrf
             <h2 class="text-2xl font-semibold text-emerald-900 mb-2">Welcome Back!</h2>
+            <p class="text-sm text-slate-500">Your teacher creates your login. Use the email and password they shared with you.</p>
 
             <div>
                 <label for="email" class="form-label fw-semibold text-emerald-800">Email</label>

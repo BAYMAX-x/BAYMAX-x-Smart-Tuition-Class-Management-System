@@ -4,6 +4,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\EnsureUserIsTeacher;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
@@ -67,6 +68,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'signed' => ValidateSignature::class,
             'throttle' => ThrottleRequests::class,
             'verified' => EnsureEmailIsVerified::class,
+            'teacher' => EnsureUserIsTeacher::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

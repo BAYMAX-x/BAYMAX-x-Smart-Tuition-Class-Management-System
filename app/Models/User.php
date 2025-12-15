@@ -27,6 +27,7 @@ class User extends Authenticatable
         'school_name',
         'guardian_name',
         'guardian_phone',
+        'is_teacher',
         'password',
     ];
 
@@ -50,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_teacher' => 'boolean',
         ];
     }
 }

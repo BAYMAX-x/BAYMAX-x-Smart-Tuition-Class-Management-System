@@ -20,21 +20,20 @@
 <body class="min-h-screen flex items-center justify-center py-10 px-4 text-slate-700">
     <div class="max-w-5xl w-full bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl grid lg:grid-cols-2 gap-8 p-8 border border-emerald-50">
         <div class="flex flex-col gap-4 justify-center">
-            <p class="text-sm uppercase tracking-wide text-emerald-500">Student Enrollment</p>
+            <p class="text-sm uppercase tracking-wide text-emerald-500">Teacher-Only Enrollment</p>
             <h1 class="text-3xl font-bold text-emerald-900">Smart Tuition Class Management System</h1>
             <p class="leading-relaxed text-slate-600">
-                Fill in the registration form to create your student profile. After a quick sign-up,
-                you'll be redirected to your personalized dashboard to see upcoming modules and announcements.
+                Teachers can add students here. Each student will receive their own login so they can access their
+                dashboard immediately after you create the account -- no self-signups needed.
             </p>
             <div class="flex items-center gap-4 bg-emerald-50 rounded-2xl p-4">
                 <div class="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
                     ST
                 </div>
-                <p class="text-emerald-700 font-medium mb-0">Seamless admissions + one login for everything.</p>
+                <p class="text-emerald-700 font-medium mb-0">Seamless teacher-managed onboarding for every student.</p>
             </div>
             <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-800 font-semibold transition">
-                Already registered? Login here
-                <span aria-hidden="true">→</span>
+                Students log in from the sign-in page after you create their account.
             </a>
         </div>
 
@@ -42,6 +41,11 @@
             @csrf
             <h2 class="text-2xl font-semibold text-emerald-900 mb-1">Create Student Account</h2>
             <p class="text-sm text-slate-500 mb-3">All highlighted (*) fields are required.</p>
+            @if (session('status'))
+                <div class="alert alert-success rounded-2xl border-0 shadow-sm" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
 
             <div>
                 <label for="full_name" class="form-label fw-semibold text-emerald-800">Full Name *</label>
@@ -141,3 +145,4 @@
     </div>
 </body>
 </html>
+
