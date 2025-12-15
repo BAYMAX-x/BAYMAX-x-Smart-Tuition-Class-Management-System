@@ -14,59 +14,148 @@
         crossorigin="anonymous">
 
     <style>
-        body {
-            background: radial-gradient(circle at top, #e3f3ed, #fdfefb 55%);
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #f1fbf5 0%, #e5f5ed 100%);
+            border-right: 1px solid #d7efe3;
+            padding: 24px 12px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        .nav-soft {
-            box-shadow: 0 15px 45px rgba(29, 78, 61, 0.15);
+        .brand-circle {
+            height: 52px;
+            width: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #d6f5e3, #b8ead2);
+            display: grid;
+            place-items: center;
+            color: #115e34;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            color: #155e3d;
+            font-weight: 600;
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .nav-link.active {
+            background: #1d9c6b;
+            color: #f3fff9;
+            border-color: #178a5c;
+            box-shadow: 0 10px 30px rgba(23, 138, 92, 0.25);
+        }
+
+        .nav-link:hover {
+            background: #e6f7ee;
+        }
+
+        .topbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2f1e8;
+        }
+
+        .content-surface {
+            background: linear-gradient(180deg, #fdfefc 0%, #f3fbf7 100%);
+            border-radius: 28px;
+            padding: 28px;
+            min-height: 70vh;
+            border: 1px solid #e5f2ea;
         }
 
         .soft-card {
-            border-radius: 24px;
-            box-shadow: 0 15px 50px rgba(26, 67, 52, 0.1);
-            background: linear-gradient(135deg, #f6fff6, #ecf8f2);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(26, 67, 52, 0.12);
+            background: linear-gradient(135deg, #f6fff6, #ebf7f0);
+            border: 1px solid #def0e4;
         }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-800">
-    <div class="min-h-screen flex flex-col">
-        <nav class="nav-soft bg-white/80 backdrop-blur-md border-b border-green-50 sticky top-0 z-50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center text-emerald-700 font-bold">
-                        ST
-                    </div>
+<body class="font-sans antialiased text-slate-800" style="background: radial-gradient(circle at 15% 20%, #e8f7ef, #f7fffb 60%);">
+    <div class="d-flex min-vh-100">
+        @auth
+            <aside class="sidebar shadow-lg">
+                <div class="d-flex align-items-center gap-3 mb-4 px-3">
+                    <div class="brand-circle">ST</div>
                     <div>
-                        <p class="text-sm uppercase tracking-wide text-emerald-500">Smart Tuition</p>
-                        <p class="text-xl font-semibold text-emerald-900">Class Management System</p>
+                        <p class="text-uppercase text-emerald-600 small mb-1">Smart Tuition</p>
+                        <p class="fw-semibold text-emerald-900 mb-0">Class Management</p>
                     </div>
                 </div>
 
+                @php
+                    $isTeacher = auth()->user()->is_teacher ?? false;
+                    $navItems = $isTeacher
+                        ? [
+                            ['label' => 'Dashboard', 'route' => 'teacher.dashboard', 'icon' => '🏠', 'active' => 'teacher.dashboard'],
+                            ['label' => 'Students', 'route' => 'teacher.students.index', 'icon' => '👥', 'active' => 'teacher.students.*'],
+                            ['label' => 'Add Student', 'route' => 'teacher.students.create', 'icon' => '➕', 'active' => 'teacher.students.create'],
+                        ]
+                        : [
+                            ['label' => 'Dashboard', 'route' => 'student.dashboard', 'icon' => '🏠', 'active' => 'student.dashboard'],
+                            ['label' => 'Courses', 'route' => null, 'icon' => '📚'],
+                            ['label' => 'Assignments', 'route' => null, 'icon' => '📝'],
+                            ['label' => 'Exams', 'route' => null, 'icon' => '🧭'],
+                            ['label' => 'Calendar', 'route' => null, 'icon' => '📅'],
+                        ];
+                @endphp
+
+                <nav class="nav flex-column gap-2 px-2">
+                    @foreach ($navItems as $item)
+                        @php
+                            $activePattern = $item['active'] ?? $item['route'];
+                            $isActive = $activePattern ? request()->routeIs($activePattern) : false;
+                        @endphp
+                        <a
+                            class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-3 {{ $isActive ? 'active' : '' }}"
+                            href="{{ $item['route'] ? route($item['route']) : '#' }}"
+                        >
+                            <span class="fs-6">{{ $item['icon'] }}</span>
+                            <span class="fw-semibold">{{ $item['label'] }}</span>
+                        </a>
+                    @endforeach
+                </nav>
+
+                <div class="mt-auto px-3 pb-4">
+                    <div class="small text-emerald-700 fw-semibold mb-2">Settings</div>
+                    <div class="d-flex flex-column gap-2">
+                        <button class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700">System Settings</button>
+                        <button class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700">Help & Support</button>
+                    </div>
+                </div>
+            </aside>
+        @endauth
+
+        <div class="flex-fill d-flex flex-column">
+            <header class="topbar d-flex align-items-center justify-content-between px-4 py-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="small text-emerald-700 fw-semibold text-uppercase tracking-wide">Today</div>
+                    <div class="text-slate-600">{{ now()->format('l, F j') }}</div>
+                </div>
                 @auth
-                    <div class="flex items-center gap-3">
-                        <p class="text-emerald-800 font-medium mb-0">
-                            {{ auth()->user()->full_name ?? auth()->user()->name }}
-                        </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="text-end">
+                            <p class="mb-0 fw-semibold text-emerald-900">{{ auth()->user()->full_name ?? auth()->user()->name }}</p>
+                            <p class="mb-0 text-slate-500 small">{{ (auth()->user()->is_teacher ?? false) ? 'Teacher' : 'Student' }}</p>
+                        </div>
                         <form action="{{ route('logout') }}" method="POST" class="mb-0">
                             @csrf
-                            <button
-                                type="submit"
-                                class="btn btn-success d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-sm shadow-sm hover:shadow-lg transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                                    <path fill-rule="evenodd" d="M5.25 3a.75.75 0 00-.75.75v16.5c0 .414.336.75.75.75H12a.75.75 0 000-1.5H6V4.5h6a.75.75 0 000-1.5H5.25zm11.03 4.22a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 01-1.06-1.06L18.44 12l-2.16-2.22a.75.75 0 010-1.06zm-8.03 2.03a.75.75 0 000 1.5h8.25a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
-                                </svg>
-                                Logout
-                            </button>
+                            <button type="submit" class="btn btn-success rounded-pill px-3 py-2 shadow-sm">Logout</button>
                         </form>
                     </div>
                 @endauth
-            </div>
-        </nav>
+            </header>
 
-        <main class="flex-1 py-8 px-4 sm:px-8 lg:px-10">
-            @yield('content')
-        </main>
+            <main class="flex-fill py-4 px-4 px-md-5">
+                <div class="content-surface shadow-lg">
+                    @yield('content')
+                </div>
+            </main>
+        </div>
     </div>
 </body>
 </html>

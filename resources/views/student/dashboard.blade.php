@@ -1,106 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-6xl mx-auto space-y-8">
-        <div class="rounded-3xl bg-gradient-to-br from-emerald-50 via-emerald-100 to-white p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-xl">
+    <div class="d-flex flex-column gap-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
-                <p class="text-sm uppercase tracking-[0.35em] text-emerald-500">Student Portal</p>
-                <h2 class="text-3xl font-semibold text-emerald-900">Welcome, {{ $student->full_name ?? $student->name }}</h2>
-                <p class="text-slate-600 mt-3 leading-relaxed">
-                    Your personalized hub for upcoming classes, announcements, and exam performance. We’ll keep enriching this
-                    space — stay tuned!
+                <p class="text-uppercase text-emerald-600 small mb-1">{{ now()->format('l, F j') }}</p>
+                <h2 class="h3 text-emerald-900 mb-1">Dashboard Overview</h2>
+                <p class="text-slate-600 mb-0">
+                    Welcome back! Review upcoming sessions, quick stats, and personalized announcements tailored to your learning journey.
                 </p>
             </div>
-            <div class="flex items-center gap-4 bg-white/80 rounded-3xl px-6 py-4 shadow-inner border border-emerald-100">
-                <div class="h-16 w-16 rounded-full bg-gradient-to-br from-emerald-200 to-emerald-300 flex items-center justify-center text-2xl font-bold text-emerald-800">
-                    {{ strtoupper(substr($student->full_name ?? $student->name, 0, 2)) }}
+            <div class="d-flex gap-2">
+                <button class="btn btn-success rounded-pill px-3 shadow-sm">View Courses</button>
+                <button class="btn btn-outline-success rounded-pill px-3">Check Assignments</button>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100">
+                    <p class="text-uppercase text-emerald-600 small mb-1">Current Grade</p>
+                    <p class="h4 text-emerald-900 mb-2">{{ $student->grade ?? 'Not set' }}</p>
+                    <p class="mb-0 text-slate-600">We’ll keep this updated as your profile evolves.</p>
                 </div>
-                <div>
-                    <p class="text-sm text-emerald-500">Current Grade</p>
-                    <p class="text-xl font-semibold text-emerald-900">{{ $student->grade ?? 'Not set' }}</p>
+            </div>
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100">
+                    <p class="text-uppercase text-emerald-600 small mb-1">Guardian</p>
+                    <p class="h4 text-emerald-900 mb-2">{{ $student->guardian_name ?? 'Not provided' }}</p>
+                    <p class="mb-0 text-slate-600">Contact: {{ $student->guardian_phone ?? 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100 d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-uppercase text-emerald-600 small mb-1">Profile</p>
+                        <p class="h4 text-emerald-900 mb-0">{{ $student->full_name ?? $student->name }}</p>
+                        <p class="text-slate-600 mb-0">{{ $student->email }}</p>
+                    </div>
+                    <div class="rounded-circle bg-emerald-100 text-emerald-800 d-flex align-items-center justify-content-center fw-bold" style="width:64px;height:64px;">
+                        {{ strtoupper(substr($student->full_name ?? $student->name, 0, 2)) }}
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-[280px,1fr] gap-8">
-            <aside class="soft-card p-6 space-y-5">
-                <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Quick Links</p>
-                <div class="space-y-3">
-                    <button class="w-full flex items-center gap-3 bg-white rounded-2xl px-4 py-3 text-left text-emerald-800 font-semibold shadow-sm">
-                        <span class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
-                            🧭
-                        </span>
-                        Dashboard
-                    </button>
-                    <button class="w-full flex items-center gap-3 px-4 py-3 text-left text-slate-500 hover:text-emerald-700 rounded-2xl transition">
-                        <span class="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            📚
-                        </span>
-                        Courses
-                    </button>
-                    <button class="w-full flex items-center gap-3 px-4 py-3 text-left text-slate-500 hover:text-emerald-700 rounded-2xl transition">
-                        <span class="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            📝
-                        </span>
-                        Assignments
-                    </button>
-                    <button class="w-full flex items-center gap-3 px-4 py-3 text-left text-slate-500 hover:text-emerald-700 rounded-2xl transition">
-                        <span class="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            📢
-                        </span>
-                        Announcements
-                    </button>
+        <div class="soft-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <div>
+                    <p class="text-uppercase text-emerald-600 small mb-1">Student Profile</p>
+                    <h3 class="h5 text-emerald-900 mb-0">Details at a glance</h3>
                 </div>
-            </aside>
+                <button class="btn btn-outline-success rounded-pill px-3">Update Info</button>
+            </div>
+            <div class="row g-3 text-slate-700">
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-white h-100 border border-emerald-50">
+                        <p class="small text-emerald-600 mb-1">Email</p>
+                        <p class="mb-0 fw-semibold">{{ $student->email }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-white h-100 border border-emerald-50">
+                        <p class="small text-emerald-600 mb-1">Phone</p>
+                        <p class="mb-0 fw-semibold">{{ $student->phone ?? 'Not provided' }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-white h-100 border border-emerald-50">
+                        <p class="small text-emerald-600 mb-1">School</p>
+                        <p class="mb-0 fw-semibold">{{ $student->school_name ?? 'Not provided' }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-white h-100 border border-emerald-50">
+                        <p class="small text-emerald-600 mb-1">Address</p>
+                        <p class="mb-0 fw-semibold">{{ $student->address ?? 'Not provided' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <section class="space-y-6">
-                <div class="soft-card p-6">
-                    <h3 class="text-xl font-semibold text-emerald-900 mb-4">Student Profile</h3>
-                    <div class="grid md:grid-cols-2 gap-5 text-slate-700">
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Full Name</p>
-                            <p class="text-lg font-medium">{{ $student->full_name }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Email</p>
-                            <p class="text-lg font-medium">{{ $student->email }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Phone</p>
-                            <p class="text-lg font-medium">{{ $student->phone ?? 'Not provided' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">School</p>
-                            <p class="text-lg font-medium">{{ $student->school_name ?? 'Not provided' }}</p>
-                        </div>
-                    </div>
-                    <div class="mt-4 grid md:grid-cols-2 gap-5 text-slate-700">
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Guardian Name</p>
-                            <p class="text-lg font-medium">{{ $student->guardian_name ?? 'Not provided' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs uppercase text-emerald-500 tracking-[0.4em]">Guardian Phone</p>
-                            <p class="text-lg font-medium">{{ $student->guardian_phone ?? 'Not provided' }}</p>
-                        </div>
-                    </div>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100">
+                    <p class="text-uppercase text-emerald-600 small mb-1">Courses</p>
+                    <p class="mb-2 text-slate-700">Your enrolled courses will appear here.</p>
+                    <button class="btn btn-outline-success rounded-pill px-3">View Courses</button>
                 </div>
-
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="soft-card p-5 flex flex-col gap-2">
-                        <h4 class="text-lg font-semibold text-emerald-900">My Classes (Coming Soon)</h4>
-                        <p class="text-sm text-slate-500">We are curating your enrolled classes.</p>
-                    </div>
-                    <div class="soft-card p-5 flex flex-col gap-2">
-                        <h4 class="text-lg font-semibold text-emerald-900">My Exam Results (Coming Soon)</h4>
-                        <p class="text-sm text-slate-500">Track performance and improvements here.</p>
-                    </div>
-                    <div class="soft-card p-5 flex flex-col gap-2">
-                        <h4 class="text-lg font-semibold text-emerald-900">Announcements (Coming Soon)</h4>
-                        <p class="text-sm text-slate-500">Important notices will appear shortly.</p>
-                    </div>
+            </div>
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100">
+                    <p class="text-uppercase text-emerald-600 small mb-1">Assignments</p>
+                    <p class="mb-2 text-slate-700">Track deadlines and submissions in one spot.</p>
+                    <button class="btn btn-outline-success rounded-pill px-3">Open Assignments</button>
                 </div>
-            </section>
+            </div>
+            <div class="col-md-4">
+                <div class="soft-card p-4 h-100">
+                    <p class="text-uppercase text-emerald-600 small mb-1">Announcements</p>
+                    <p class="mb-2 text-slate-700">Stay updated with your class announcements.</p>
+                    <button class="btn btn-outline-success rounded-pill px-3">View Announcements</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
