@@ -94,13 +94,17 @@
                             ['label' => 'Dashboard', 'route' => 'teacher.dashboard', 'icon' => '🏠', 'active' => 'teacher.dashboard'],
                             ['label' => 'Students', 'route' => 'teacher.students.index', 'icon' => '👥', 'active' => 'teacher.students.*'],
                             ['label' => 'Add Student', 'route' => 'teacher.students.create', 'icon' => '➕', 'active' => 'teacher.students.create'],
+                            ['label' => 'Courses', 'route' => 'teacher.courses', 'icon' => '📚', 'active' => 'teacher.courses'],
+                            ['label' => 'Assignments', 'route' => 'teacher.assignments', 'icon' => '📝', 'active' => 'teacher.assignments'],
+                            ['label' => 'Exams', 'route' => 'teacher.exams', 'icon' => '🧭', 'active' => 'teacher.exams'],
+                            ['label' => 'Calendar', 'route' => 'teacher.calendar', 'icon' => '📅', 'active' => 'teacher.calendar'],
                         ]
                         : [
                             ['label' => 'Dashboard', 'route' => 'student.dashboard', 'icon' => '🏠', 'active' => 'student.dashboard'],
-                            ['label' => 'Courses', 'route' => null, 'icon' => '📚'],
-                            ['label' => 'Assignments', 'route' => null, 'icon' => '📝'],
-                            ['label' => 'Exams', 'route' => null, 'icon' => '🧭'],
-                            ['label' => 'Calendar', 'route' => null, 'icon' => '📅'],
+                            ['label' => 'Courses', 'route' => 'student.courses', 'icon' => '📚', 'active' => 'student.courses'],
+                            ['label' => 'Assignments', 'route' => 'student.assignments', 'icon' => '📝', 'active' => 'student.assignments'],
+                            ['label' => 'Exams', 'route' => 'student.exams', 'icon' => '🧭', 'active' => 'student.exams'],
+                            ['label' => 'Calendar', 'route' => 'student.calendar', 'icon' => '📅', 'active' => 'student.calendar'],
                         ];
                 @endphp
 
@@ -123,8 +127,10 @@
                 <div class="mt-auto px-3 pb-4">
                     <div class="small text-emerald-700 fw-semibold mb-2">Settings</div>
                     <div class="d-flex flex-column gap-2">
-                        <button class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700">System Settings</button>
-                        <button class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700">Help & Support</button>
+                        <a class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700"
+                           href="{{ $isTeacher ? route('teacher.settings') : route('student.settings') }}">System Settings</a>
+                        <a class="btn btn-light border-0 text-start rounded-3 py-2 px-3 text-slate-700"
+                           href="{{ $isTeacher ? route('teacher.help') : route('student.help') }}">Help & Support</a>
                     </div>
                 </div>
             </aside>

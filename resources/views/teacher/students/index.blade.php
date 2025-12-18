@@ -45,7 +45,8 @@
                                     <td>{{ $student->school_name ?? 'N/A' }}</td>
                                     <td>{{ $student->guardian_name ?? 'N/A' }}</td>
                                     <td class="text-end">
-                                        <a class="btn btn-sm btn-outline-success rounded-pill me-2" href="{{ route('teacher.students.edit', $student) }}">Edit</a>
+                                        <a class="btn btn-sm btn-outline-success rounded-pill me-1" href="{{ route('teacher.students.edit', $student) }}">Edit</a>
+                                        <a class="btn btn-sm btn-outline-primary rounded-pill me-1" href="{{ route('teacher.students.password.edit', $student) }}">Reset Password</a>
                                         <form action="{{ route('teacher.students.destroy', $student) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')

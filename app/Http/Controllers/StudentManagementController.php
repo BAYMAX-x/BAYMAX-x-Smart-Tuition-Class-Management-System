@@ -85,6 +85,29 @@ class StudentManagementController extends Controller
             ->with('status', 'Student updated successfully.');
     }
 
+    public function editPassword(int $id): View
+    {
+        $student = $this->findStudentOrFail($id);
+
+        return view('teacher.students.password', compact('student'));
+    }
+
+    public function updatePassword(Request $request, int $id): RedirectResponse
+    {
+        $student = $this->findStudentOrFail($id);
+
+        $validated = $request->validate([
+            'password' => ['required', 'confirmed', Rules\Password::defaults()->min(8)],
+        ]);
+
+        $student->password = Hash::make($validated['password']);
+        $student->save();
+
+        return redirect()
+            ->route('teacher.students.index')
+            ->with('status', 'Password updated successfully.');
+    }
+
     public function destroy(int $id): RedirectResponse
     {
         $student = $this->findStudentOrFail($id);
