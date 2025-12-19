@@ -78,7 +78,7 @@
 <body class="font-sans antialiased text-slate-800" style="background: radial-gradient(circle at 15% 20%, #e8f7ef, #f7fffb 60%);">
     <div class="d-flex min-vh-100">
         @auth
-            <aside class="sidebar shadow-lg">
+            <aside class="sidebar shadow-lg d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-4 px-3">
                     <div class="brand-circle">ST</div>
                     <div>
@@ -94,9 +94,10 @@
                             ['label' => 'Dashboard', 'route' => 'teacher.dashboard', 'icon' => '🏠', 'active' => 'teacher.dashboard'],
                             ['label' => 'Students', 'route' => 'teacher.students.index', 'icon' => '👥', 'active' => 'teacher.students.*'],
                             ['label' => 'Add Student', 'route' => 'teacher.students.create', 'icon' => '➕', 'active' => 'teacher.students.create'],
-                            ['label' => 'Courses', 'route' => 'teacher.courses', 'icon' => '📚', 'active' => 'teacher.courses'],
-                            ['label' => 'Assignments', 'route' => 'teacher.assignments', 'icon' => '📝', 'active' => 'teacher.assignments'],
-                            ['label' => 'Exams', 'route' => 'teacher.exams', 'icon' => '🧭', 'active' => 'teacher.exams'],
+                            ['label' => 'Courses', 'route' => 'teacher.courses.index', 'icon' => '📚', 'active' => 'teacher.courses.*'],
+                            ['label' => 'Assignments', 'route' => 'teacher.assignments.index', 'icon' => '📝', 'active' => 'teacher.assignments.*'],
+                            ['label' => 'Exams', 'route' => 'teacher.exams.index', 'icon' => '🧭', 'active' => 'teacher.exams.*'],
+                            ['label' => 'Zoom Links', 'route' => 'teacher.zoom-links.index', 'icon' => '🎥', 'active' => 'teacher.zoom-links.*'],
                             ['label' => 'Calendar', 'route' => 'teacher.calendar', 'icon' => '📅', 'active' => 'teacher.calendar'],
                         ]
                         : [
@@ -104,6 +105,7 @@
                             ['label' => 'Courses', 'route' => 'student.courses', 'icon' => '📚', 'active' => 'student.courses'],
                             ['label' => 'Assignments', 'route' => 'student.assignments', 'icon' => '📝', 'active' => 'student.assignments'],
                             ['label' => 'Exams', 'route' => 'student.exams', 'icon' => '🧭', 'active' => 'student.exams'],
+                            ['label' => 'Zoom Links', 'route' => 'student.zoom-links', 'icon' => '🎥', 'active' => 'student.zoom-links'],
                             ['label' => 'Calendar', 'route' => 'student.calendar', 'icon' => '📅', 'active' => 'student.calendar'],
                         ];
                 @endphp

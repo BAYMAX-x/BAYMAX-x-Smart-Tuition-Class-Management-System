@@ -17,19 +17,25 @@
             </div>
         @endif
 
-        <div class="soft-card p-0">
-            @if ($students->isEmpty())
-                <div class="p-5">
-                    <p class="text-slate-600 mb-2">No students found.</p>
-                    <a class="btn btn-success rounded-pill" href="{{ route('teacher.students.create') }}">Add first student</a>
+        @if ($students->isEmpty())
+            <div class="soft-card p-5">
+                <p class="text-slate-600 mb-2">No students found.</p>
+                <a class="btn btn-success rounded-pill" href="{{ route('teacher.students.create') }}">Add first student</a>
+            </div>
+        @else
+            <div class="soft-card p-0 overflow-hidden">
+                <div class="px-4 py-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <p class="text-uppercase text-emerald-600 small mb-1">Student List</p>
+                        <p class="mb-0 text-slate-600">Total: {{ $students->total() }} students</p>
+                    </div>
+                    <div class="text-slate-500 small">Page {{ $students->currentPage() }} of {{ $students->lastPage() }}</div>
                 </div>
-            @else
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
                         <thead class="table-light">
                             <tr class="text-emerald-700">
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Student</th>
                                 <th scope="col">Grade</th>
                                 <th scope="col">School</th>
                                 <th scope="col">Guardian</th>
@@ -39,12 +45,24 @@
                         <tbody>
                             @foreach ($students as $student)
                                 <tr>
-                                    <td class="fw-semibold text-emerald-900">{{ $student->full_name ?? $student->name }}</td>
-                                    <td>{{ $student->email }}</td>
-                                    <td>{{ $student->grade ?? 'N/A' }}</td>
-                                    <td>{{ $student->school_name ?? 'N/A' }}</td>
-                                    <td>{{ $student->guardian_name ?? 'N/A' }}</td>
-                                    <td class="text-end">
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-circle bg-emerald-100 text-emerald-800 d-flex align-items-center justify-content-center fw-semibold" style="width:44px;height:44px;">
+                                                {{ strtoupper(substr($student->full_name ?? $student->name, 0, 2)) }}
+                                            </div>
+                                            <div>
+                                                <p class="mb-0 fw-semibold text-emerald-900">{{ $student->full_name ?? $student->name }}</p>
+                                                <p class="mb-0 text-slate-600 small">{{ $student->email }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-slate-700">{{ $student->grade ?? 'N/A' }}</td>
+                                    <td class="text-slate-700">{{ $student->school_name ?? 'N/A' }}</td>
+                                    <td class="text-slate-700">
+                                        <div>{{ $student->guardian_name ?? 'N/A' }}</div>
+                                        <div class="text-slate-500 small">{{ $student->guardian_phone ?? '' }}</div>
+                                    </td>
+                                    <td class="text-end text-nowrap">
                                         <a class="btn btn-sm btn-outline-success rounded-pill me-1" href="{{ route('teacher.students.edit', $student) }}">Edit</a>
                                         <a class="btn btn-sm btn-outline-primary rounded-pill me-1" href="{{ route('teacher.students.password.edit', $student) }}">Reset Password</a>
                                         <form action="{{ route('teacher.students.destroy', $student) }}" method="POST" class="d-inline">
@@ -61,7 +79,7 @@
                 <div class="px-4 py-3">
                     {{ $students->links() }}
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
 @endsection

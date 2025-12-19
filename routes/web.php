@@ -2,9 +2,15 @@
 
 use App\Http\Controllers\StudentDashboardController;
 use App\Http\Controllers\TeacherDashboardController;
+use App\Http\Controllers\Teacher\CourseController as TeacherCourseController;
+use App\Http\Controllers\Teacher\AssignmentController as TeacherAssignmentController;
+use App\Http\Controllers\Teacher\ExamController as TeacherExamController;
+use App\Http\Controllers\Teacher\ZoomLinkController as TeacherZoomLinkController;
+use App\Http\Controllers\Teacher\SettingsController as TeacherSettingsController;
 use App\Http\Controllers\StudentManagementController;
 use App\Http\Controllers\StudentPageController;
 use App\Http\Controllers\TeacherPageController;
+use App\Http\Controllers\Student\SettingsController as StudentSettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,8 +29,12 @@ Route::middleware('auth')->group(function (): void {
         ->name('student.exams');
     Route::get('/student/calendar', [StudentPageController::class, 'calendar'])
         ->name('student.calendar');
-    Route::get('/student/settings', [StudentPageController::class, 'settings'])
+    Route::get('/student/zoom-links', [StudentPageController::class, 'zoomLinks'])
+        ->name('student.zoom-links');
+    Route::get('/student/settings', [StudentSettingsController::class, 'edit'])
         ->name('student.settings');
+    Route::put('/student/settings', [StudentSettingsController::class, 'update'])
+        ->name('student.settings.update');
     Route::get('/student/help', [StudentPageController::class, 'help'])
         ->name('student.help');
 });
@@ -42,16 +52,22 @@ Route::middleware(['auth', 'teacher'])
         Route::put('students/{student}/password', [StudentManagementController::class, 'updatePassword'])
             ->name('students.password.update');
 
-        Route::get('/courses', [TeacherPageController::class, 'courses'])
-            ->name('courses');
-        Route::get('/assignments', [TeacherPageController::class, 'assignments'])
-            ->name('assignments');
-        Route::get('/exams', [TeacherPageController::class, 'exams'])
-            ->name('exams');
+        Route::resource('courses', TeacherCourseController::class)
+            ->except(['create', 'edit', 'show']);
+        Route::resource('assignments', TeacherAssignmentController::class)
+            ->except(['create', 'edit', 'show']);
+        Route::resource('exams', TeacherExamController::class)
+            ->except(['create', 'edit', 'show']);
+        Route::resource('zoom-links', TeacherZoomLinkController::class)
+            ->parameters(['zoom-links' => 'zoom_link'])
+            ->except(['create', 'edit', 'show']);
+
         Route::get('/calendar', [TeacherPageController::class, 'calendar'])
             ->name('calendar');
-        Route::get('/settings', [TeacherPageController::class, 'settings'])
+        Route::get('/settings', [TeacherSettingsController::class, 'edit'])
             ->name('settings');
+        Route::put('/settings', [TeacherSettingsController::class, 'update'])
+            ->name('settings.update');
         Route::get('/help', [TeacherPageController::class, 'help'])
             ->name('help');
     });
